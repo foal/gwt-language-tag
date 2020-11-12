@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jresearch</groupId>
+		<artifactId>org.jresearch.pom</artifactId>
+		<version>29-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.jresearch.gwt.languageTag</groupId>
+	<artifactId>org.jresearch.gwt.languageTag</artifactId>
+	<packaging>gwt-lib</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>JRS: GWT warapper for Connect2id language tag implementation, (RFC-5646)</name>
+	<description>JRS: GWT warapper for Connect2id language tag implementation, (RFC-5646). Java implementation of "Tags for Identifying Languages", RFC-5646. Supports normal language tags. Special private language tags beginning with "x" and grandfathered tags beginning with "i" are not supported.</description>
+	<url>https://github.com/foal/gwt-language-tag</url>
+
+	<issueManagement>
+		<url>https://github.com/foal/gwt-language-tag/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:hg:https://helixteamhub.cloud/JRS/projects/gwtTime/repositories/mercurial/gwt-language-tag</connection>
+		<developerConnection>scm:hg:ssh://hth@helixteamhub.cloud/JRS/projects/gwtTime/repositories/mercurial/gwt-language-tag</developerConnection>
+		<url>https://github.com/foal/gwt-language-tag</url>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>lang-tag</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>lang-tag</artifactId>
+			<classifier>sources</classifier>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>net.ltgt.gwt.maven</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<configuration>
+					<moduleName>org.jresearch.gwt.langtag.module</moduleName>
+					<moduleShortName>gwtLanguageTag</moduleShortName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+					<!-- To correct work of GWT  -->
+				<configuration>
+					<ignoredUnusedDeclaredDependencies>
+						<ignoredUnusedDeclaredDependency>com.nimbusds:lang-tag</ignoredUnusedDeclaredDependency>
+					</ignoredUnusedDeclaredDependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
