@@ -9,8 +9,8 @@
 		<version>29-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.jresearch.gwt.languageTag</groupId>
-	<artifactId>org.jresearch.gwt.languageTag</artifactId>
+	<groupId>org.jresearch.gwt.locale</groupId>
+	<artifactId>org.jresearch.gwt.locale.languageTag</artifactId>
 	<packaging>gwt-lib</packaging>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>JRS: GWT warapper for Connect2id language tag implementation, (RFC-5646)</name>
@@ -46,7 +46,7 @@
 				<groupId>net.ltgt.gwt.maven</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<configuration>
-					<moduleName>org.jresearch.gwt.langtag.module</moduleName>
+					<moduleName>org.jresearch.gwt.locale.langtag.module</moduleName>
 					<moduleShortName>gwtLanguageTag</moduleShortName>
 				</configuration>
 			</plugin>
