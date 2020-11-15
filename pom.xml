@@ -13,8 +13,8 @@
 	<artifactId>org.jresearch.gwt.locale.languageTag</artifactId>
 	<packaging>gwt-lib</packaging>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>JRS: GWT warapper for Connect2id language tag implementation, (RFC-5646)</name>
-	<description>JRS: GWT warapper for Connect2id language tag implementation, (RFC-5646). Java implementation of "Tags for Identifying Languages", RFC-5646. Supports normal language tags. Special private language tags beginning with "x" and grandfathered tags beginning with "i" are not supported.</description>
+	<name>JRS: GWT implementation of RFC-5646 (language tag)</name>
+	<description>JRS: GWT implementation of RFC-5646 (language tag) based on Connect2id language tag library. Java implementation of "Tags for Identifying Languages", RFC-5646. Supports normal language tags. Special private language tags beginning with "x" and grandfathered tags beginning with "i" are not supported.</description>
 	<url>https://github.com/foal/gwt-language-tag</url>
 
 	<issueManagement>
@@ -28,17 +28,19 @@
 		<url>https://github.com/foal/gwt-language-tag</url>
 	</scm>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.nimbusds</groupId>
-			<artifactId>lang-tag</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.nimbusds</groupId>
-			<artifactId>lang-tag</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
