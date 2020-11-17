@@ -21,7 +21,6 @@
 
 package org.jresearch.gwt.locale.langtag;
 
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,28 +28,32 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * Language tag utilities.
  */
 public final class LangTagUtils {
 
+	private static final Predicate<String> IS_NULL = Objects::isNull;
+	private static final Predicate<String> IS_NOT_NULL = IS_NULL.negate();
 
 	/**
-	 * Strips the language tag, if any is found, from the specified string.
-	 * This method is {@code null} safe.
+	 * Strips the language tag, if any is found, from the specified string. This
+	 * method is {@code null} safe.
 	 *
-	 * <p>Example:
+	 * <p>
+	 * Example:
 	 *
 	 * <pre>
 	 * "name#bg-BG" => "name"
 	 * "name"       => "name"
 	 * </pre>
 	 *
-	 * @param s The string. May contain a language tag. May be
-	 *          {@code null}.
+	 * @param s The string. May contain a language tag. May be {@code null}.
 	 *
 	 * @return The string with no language tag.
 	 */
@@ -67,20 +70,20 @@ public final class LangTagUtils {
 		return s.substring(0, pos);
 	}
 
-
 	/**
-	 * Strips the language tags, if any are found, from the specified
-	 * string set. This method is {@code null} safe.
+	 * Strips the language tags, if any are found, from the specified string set.
+	 * This method is {@code null} safe.
 	 *
-	 * <p>Example:
+	 * <p>
+	 * Example:
 	 *
 	 * <pre>
 	 * "name#bg-BG" => "name"
 	 * "name"       => "name"
 	 * </pre>
 	 *
-	 * @param set The string set. May contain strings with language tags.
-	 *            May be {@code null}.
+	 * @param set The string set. May contain strings with language tags. May be
+	 *            {@code null}.
 	 *
 	 * @return The string set with no language tags.
 	 */
@@ -91,26 +94,26 @@ public final class LangTagUtils {
 
 		Set<String> out = new HashSet<String>();
 
-		for (String s: set)
+		for (String s : set)
 			out.add(strip(s));
 
 		return out;
 	}
 
-
 	/**
-	 * Strips the language tags, if any are found, from the specified
-	 * string list. This method is {@code null} safe.
+	 * Strips the language tags, if any are found, from the specified string list.
+	 * This method is {@code null} safe.
 	 *
-	 * <p>Example:
+	 * <p>
+	 * Example:
 	 *
 	 * <pre>
 	 * "name#bg-BG" => "name"
 	 * "name"       => "name"
 	 * </pre>
 	 *
-	 * @param list The string list. May contain strings with language tags.
-	 *             May be {@code null}.
+	 * @param list The string list. May contain strings with language tags. May be
+	 *             {@code null}.
 	 *
 	 * @return The string list with no language tags.
 	 */
@@ -121,18 +124,17 @@ public final class LangTagUtils {
 
 		List<String> out = new ArrayList<String>(list.size());
 
-		for (String s: list)
+		for (String s : list)
 			out.add(strip(s));
 
 		return out;
 	}
 
-
 	/**
-	 * Extracts the language tag, if any is found, from the specified
-	 * string.
+	 * Extracts the language tag, if any is found, from the specified string.
 	 *
-	 * <p>Example:
+	 * <p>
+	 * Example:
 	 *
 	 * <pre>
 	 * "name#bg-BG" => "bg-BG"
@@ -140,35 +142,35 @@ public final class LangTagUtils {
 	 * "name"       => null
 	 * </pre>
 	 *
-	 * @param s The string. May contain a language tag. May be
-	 *          {@code null}.
+	 * @param s The string. May contain a language tag. May be {@code null}.
 	 *
 	 * @return The extracted language tag, {@code null} if not found.
 	 *
 	 * @throws LangTagException If the language tag is invalid.
 	 */
-	public static LangTag extract(final String s)
-		throws LangTagException {
-
-		if (s == null)
+	public static LangTag extract(final String s) {
+		if (s == null) {
 			return null;
+		}
 
 		final int pos = s.indexOf('#');
 
-		if (pos < 0 || s.length() < pos + 1)
+		if (pos < 0 || s.length() < pos + 1) {
 			return null;
+		}
 
 		return LangTag.parse(s.substring(pos + 1));
 	}
 
-
 	/**
-	 * Finds all language-tagged entries with the specified base name.
-	 * Entries with invalid language tags will be skipped.
+	 * Finds all language-tagged entries with the specified base name. Entries with
+	 * invalid language tags will be skipped.
 	 *
-	 * <p>Example:
+	 * <p>
+	 * Example:
 	 *
-	 * <p>Map to search for base name "month":
+	 * <p>
+	 * Map to search for base name "month":
 	 *
 	 * <pre>
 	 * "month"    => "January"
@@ -177,7 +179,8 @@ public final class LangTagUtils {
 	 * "month#pt" => "janeiro"
 	 * </pre>
 	 *
-	 * <p>Result:
+	 * <p>
+	 * Result:
 	 *
 	 * <pre>
 	 * null => "January"
@@ -186,21 +189,21 @@ public final class LangTagUtils {
 	 * "pt" => "janeiro"
 	 * </pre>
 	 *
-	 * @param baseName The base name to look for (without a language tag)
-	 *                 in the map keys. Must not be {@code null}.
+	 * @param baseName The base name to look for (without a language tag) in the map
+	 *                 keys. Must not be {@code null}.
 	 * @param map      The map to search. Must not be {@code null}.
 	 *
-	 * @return A map of all language-tagged entries with the specified
-	 *         base name. A {@code null} keyed entry will indicate no
-	 *         language tag (base name only).
+	 * @return A map of all language-tagged entries with the specified base name. A
+	 *         {@code null} keyed entry will indicate no language tag (base name
+	 *         only).
 	 */
-	public static <T> Map<LangTag,T> find(final String baseName, final Map<String,T> map) {
+	public static <T> Map<LangTag, T> find(final String baseName, final Map<String, T> map) {
 
-		Map<LangTag,T> result = new HashMap<LangTag,T>();
+		Map<LangTag, T> result = new HashMap<LangTag, T>();
 
 		// Walk through each map entry, checking for entry keys that
 		// start with "baseName"
-		for (Map.Entry<String,T> entry: map.entrySet()) {
+		for (Map.Entry<String, T> entry : map.entrySet()) {
 
 			T value;
 
@@ -216,8 +219,7 @@ public final class LangTagUtils {
 
 				// Claim name matches, no tag
 				result.put(null, value);
-			}
-			else if (entry.getKey().startsWith(baseName + '#')) {
+			} else if (entry.getKey().startsWith(baseName + '#')) {
 
 				// Claim name matches, has tag
 				String[] parts = entry.getKey().split("#", 2);
@@ -229,7 +231,7 @@ public final class LangTagUtils {
 					try {
 						langTag = LangTag.parse(parts[1]);
 
-					} catch (LangTagException e) {
+					} catch (IllegalArgumentException e) {
 
 						// ignore
 					}
@@ -241,7 +243,6 @@ public final class LangTagUtils {
 
 		return result;
 	}
-
 
 	/**
 	 * Returns a string list representation of the specified language tags
@@ -259,13 +260,12 @@ public final class LangTagUtils {
 
 		List<String> out = new ArrayList<String>(langTags.size());
 
-		for (LangTag lt: langTags) {
+		for (LangTag lt : langTags) {
 			out.add(lt.toString());
 		}
 
 		return out;
 	}
-
 
 	/**
 	 * Returns a string array representation of the specified language tags
@@ -283,15 +283,14 @@ public final class LangTagUtils {
 
 		String[] out = new String[langTags.size()];
 
-		int i=0;
+		int i = 0;
 
-		for (LangTag lt: langTags) {
+		for (LangTag lt : langTags) {
 			out[i++] = lt.toString();
 		}
 
 		return out;
 	}
-
 
 	/**
 	 * Parses a language tag list from the specified string collection.
@@ -303,105 +302,95 @@ public final class LangTagUtils {
 	 *
 	 * @throws LangTagException If parsing failed.
 	 */
-	public static List<LangTag> parseLangTagList(final Collection<String> collection)
-		throws LangTagException {
+	public static List<LangTag> parseLangTagList(final Collection<String> collection) {
+		if (collection == null) {
+			throw new IllegalArgumentException("Collection can't be a null");
+		}
 
-		if (collection == null)
-			return null;
+		List<LangTag> out = new ArrayList<>(collection.size());
 
-		List<LangTag> out = new ArrayList<LangTag>(collection.size());
-
-		for (String s: collection) {
+		for (String s : collection) {
 			out.add(LangTag.parse(s));
 		}
 
 		return out;
 	}
-
 
 	/**
 	 * Parses a language tag list from the specified string values.
 	 *
 	 * @param values The string values. May be {@code null}.
 	 *
-	 * @return The language tag list, or {@code null} if the parsed string
-	 *         array is null.
+	 * @return The language tag list, or {@code null} if the parsed string array is
+	 *         null.
 	 *
 	 * @throws LangTagException If parsing failed.
 	 */
-	public static List<LangTag> parseLangTagList(final String ... values)
-		throws LangTagException {
+	public static List<LangTag> parseLangTagList(final String... values) {
 
 		if (values == null)
 			return null;
 
 		List<LangTag> out = new ArrayList<LangTag>(values.length);
 
-		for (String s: values) {
+		for (String s : values) {
 			out.add(LangTag.parse(s));
 		}
 
 		return out;
 	}
 
-
 	/**
 	 * Parses a language tag array from the specified string values.
 	 *
 	 * @param values The string values. May be {@code null}.
 	 *
-	 * @return The language tag array, or {@code null} if the parsed string
-	 *         array is null.
+	 * @return The language tag array, or {@code null} if the parsed string array is
+	 *         null.
 	 *
 	 * @throws LangTagException If parsing failed.
 	 */
-	public static LangTag[] parseLangTagArray(final String... values) throws LangTagException {
-
-		if (values == null)
-			return null;
-
-		LangTag[] out = new LangTag[values.length];
-
-		for (int i=0; i < values.length; i++) {
-			out[i] = LangTag.parse(values[i]);
-		}
-
-		return out;
+	public static LangTag[] parseLangTagArray(final String... values) {
+		return values == null
+				? null
+				: Stream.of(values)
+						.filter(IS_NOT_NULL)
+						.map(LangTag::parse)
+						.toArray(LangTag[]::new);
 	}
 
 	/**
-	 * Splits the specified optionally language tagged string into a string
-	 * and language tag pair.
+	 * Splits the specified optionally language tagged string into a string and
+	 * language tag pair.
 	 *
 	 * @param s The optionally language tagged string. May be {@code null}.
 	 *
-	 * @return The pair, with {@code null} language tag if none found.
-	 *         {@code null} if the original value is {@code null}.
+	 * @return The pair, with {@code null} language tag if none found. {@code null}
+	 *         if the original value is {@code null}.
 	 *
 	 * @throws LangTagException If parsing failed.
 	 */
-	public static Map.Entry<String,LangTag> split(final String s)
-		throws LangTagException {
-
-		if (s == null)
+	public static Map.Entry<String, LangTag> split(final String s) {
+		if (s == null) {
 			return null;
+		}
 
-		if ("#".equals(s))
-			return new AbstractMap.SimpleImmutableEntry<String, LangTag>("#", null);
+		if ("#".equals(s)) {
+			return new AbstractMap.SimpleImmutableEntry<>("#", null);
+		}
 
 		final int pos = s.indexOf('#');
 
-		if (pos < 0 || s.length() < pos + 1)
-			return new AbstractMap.SimpleImmutableEntry<String, LangTag>(s, null);
+		if (pos < 0 || s.length() < pos + 1) {
+			return new AbstractMap.SimpleImmutableEntry<>(s, null);
+		}
 
-		return new AbstractMap.SimpleImmutableEntry<String, LangTag>(
-			s.substring(0, pos),
-			LangTag.parse(s.substring(pos + 1)));
+		return new AbstractMap.SimpleImmutableEntry<>(s.substring(0, pos), LangTag.parse(s.substring(pos + 1)));
 	}
-
 
 	/**
 	 * Prevents public instantiation.
 	 */
-	private LangTagUtils() { }
+	private LangTagUtils() {
+	}
 }

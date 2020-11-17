@@ -22,6 +22,7 @@
 package org.jresearch.gwt.locale.langtag;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -34,10 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jresearch.gwt.locale.langtag.LangTag;
-import org.jresearch.gwt.locale.langtag.LangTagException;
-import org.jresearch.gwt.locale.langtag.LangTagUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -99,31 +96,30 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testExtractWithNullArg() throws LangTagException {
+	public void testExtractWithNullArg() {
 
 		assertNull(LangTagUtils.extract(null));
 	}
 
 	@Test
-	public void testExtractWithNoLangTag() throws LangTagException {
+	public void testExtractWithNoLangTag() {
 
 		assertNull(LangTagUtils.extract("name"));
 	}
 
 	@Test
-	public void testExtractWithEmptyLangTag() throws LangTagException {
+	public void testExtractWithEmptyLangTag() {
 
 		assertNull(LangTagUtils.extract("name#"));
 	}
 
 	@Test
-	public void testExtractValid() throws LangTagException {
-
+	public void testExtractValid() {
 		assertEquals("bg-BG", LangTagUtils.extract("name#bg-BG").toString());
 	}
 
-	@Test(expected = LangTagException.class)
-	public void testExtractInvalid() throws LangTagException {
+	@Test(expected = IllegalArgumentException.class)
+	public void testExtractInvalid() {
 		LangTagUtils.extract("name#nosuchlangtag");
 	}
 
@@ -141,9 +137,9 @@ public class LangTagUtilTest {
 		Map<LangTag, String> result = LangTagUtils.find("month", map);
 
 		assertEquals("January", result.get(null));
-		assertEquals("Januar", result.get(new LangTag("de")));
-		assertEquals("janvier", result.get(new LangTag("fr")));
-		assertEquals("janeiro", result.get(new LangTag("pt")));
+		assertEquals("Januar", result.get(LangTag.fromLang("de")));
+		assertEquals("janvier", result.get(LangTag.fromLang("fr")));
+		assertEquals("janeiro", result.get(LangTag.fromLang("pt")));
 
 		assertEquals(4, result.size());
 	}
@@ -175,7 +171,7 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testToStringList() throws LangTagException {
+	public void testToStringList() {
 
 		List<LangTag> in = new LinkedList<>();
 		in.add(LangTag.parse("en-GB"));
@@ -195,7 +191,7 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testToStringArray() throws LangTagException {
+	public void testToStringArray() {
 
 		List<LangTag> in = new LinkedList<>();
 		in.add(LangTag.parse("en-GB"));
@@ -215,7 +211,7 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testParseLangTagList() throws LangTagException {
+	public void testParseLangTagList() {
 
 		// From string list
 		List<String> in = Arrays.asList("bg-BG", "de-DE");
@@ -233,13 +229,13 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testParseLangTagListNull() throws LangTagException {
+	public void testParseLangTagListNull() {
 
 		assertNull(LangTagUtils.parseLangTagList((String[]) null));
 	}
 
 	@Test
-	public void testParseLangTagArray() throws LangTagException {
+	public void testParseLangTagArray() {
 
 		String[] in = { "bg-BG", "fr-FR" };
 
@@ -250,19 +246,19 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testParseLangTagArrayNull() throws LangTagException {
+	public void testParseLangTagArrayNull() {
 		assertNull(LangTagUtils.parseLangTagArray((String[]) null));
 	}
 
-//TODO
 	@Test
-	@Ignore
-	public void testParseLangTagStringNull() throws LangTagException {
-		assertNull(LangTagUtils.parseLangTagArray((String) null));
+	public void testParseLangTagStringNull() {
+		LangTag[] result = LangTagUtils.parseLangTagArray((String) null);
+		assertNotNull(result);
+		assertTrue(result.length == 0);
 	}
 
 	@Test
-	public void testSplit() throws LangTagException {
+	public void testSplit() {
 
 		Map.Entry<String, LangTag> pair = LangTagUtils.split("name#bg-BG");
 		assertEquals("name", pair.getKey());
@@ -270,7 +266,7 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testSplit_noLangTag() throws LangTagException {
+	public void testSplit_noLangTag() {
 
 		Map.Entry<String, LangTag> pair = LangTagUtils.split("name");
 		assertEquals("name", pair.getKey());
@@ -278,7 +274,7 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testSplit_empty() throws LangTagException {
+	public void testSplit_empty() {
 
 		Map.Entry<String, LangTag> pair = LangTagUtils.split("");
 		assertEquals("", pair.getKey());
@@ -286,20 +282,20 @@ public class LangTagUtilTest {
 	}
 
 	@Test
-	public void testSplit_hash() throws LangTagException {
+	public void testSplit_hash() {
 
 		Map.Entry<String, LangTag> pair = LangTagUtils.split("#");
 		assertEquals("#", pair.getKey());
 		assertNull(pair.getValue());
 	}
 
-	@Test(expected = LangTagException.class)
-	public void testSplit_invalidLangTag() throws LangTagException {
-		LangTagUtils.split("name#invalid-tag");
+	@Test(expected = IllegalArgumentException.class)
+	public void testSplit_invalidLangTag() {
+		LangTagUtils.split("name#invalidlong-tag");
 	}
 
 	@Test
-	public void testSplit_null() throws LangTagException {
+	public void testSplit_null() {
 		assertNull(LangTagUtils.split(null));
 	}
 }

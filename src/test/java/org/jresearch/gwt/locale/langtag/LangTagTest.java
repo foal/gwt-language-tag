@@ -35,78 +35,66 @@ import org.junit.Test;
 public class LangTagTest {
 
 	@Test
-	public void testConstructorSimple() throws LangTagException {
-		LangTag lt = new LangTag("en");
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("en", lt.getLanguage());
+	public void testConstructorSimple() {
+		LangTag lt = LangTag.fromLang("en");
+		assertEquals("en", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("en", lt.language());
 		assertEquals("en", lt.toString());
 	}
 
 	@Test
-	public void testConstructorSimpleCanonicalFormat() throws LangTagException {
-		LangTag lt = new LangTag("EN");
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("en", lt.getLanguage());
+	public void testConstructorSimpleCanonicalFormat() {
+		LangTag lt = LangTag.fromLang("EN");
+		assertEquals("en", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("en", lt.language());
 		assertEquals("en", lt.toString());
 	}
 
-	@SuppressWarnings("unused")
-	@Test(expected = LangTagException.class)
-	public void testConstructorNull() throws LangTagException {
-		new LangTag(null);
+	@Test(expected = NullPointerException.class)
+	public void testConstructorNull() {
+		LangTag.fromLang(null);
 	}
 
 	@Test
-	public void testConstructorExtended() throws LangTagException {
-
-		LangTag lt = new LangTag("zh", "cmn");
-		assertEquals("zh", lt.getPrimaryLanguage());
-		assertNotNull(lt.getExtendedLanguageSubtags());
-		assertEquals("cmn", lt.getExtendedLanguageSubtags()[0]);
-		assertEquals("zh-cmn", lt.getLanguage());
+	public void testConstructorExtended() {
+		LangTag lt = LangTag.fromLang("zh", "cmn");
+		assertEquals("zh", lt.primaryLanguage());
+		assertNotNull(lt.languageSubtags());
+		assertEquals("cmn", lt.languageSubtags().get(0));
+		assertEquals("zh-cmn", lt.language());
 		assertEquals("zh-cmn", lt.toString());
 	}
 
-	@SuppressWarnings("unused")
-	@Test(expected = LangTagException.class)
-	public void testConstructorExtendedNull() throws LangTagException {
-		new LangTag(null, new String[] {});
+	@Test(expected = NullPointerException.class)
+	public void testConstructorExtendedNull() {
+		LangTag.fromLang(null, new String[] {});
 	}
 
 	@Test
 	public void testConstructorExtendedMultiple() throws Exception {
 
-		LangTag lt = new LangTag("zh", "cmn", "xyz");
-		assertEquals("zh", lt.getPrimaryLanguage());
-		assertNotNull(lt.getExtendedLanguageSubtags());
-		assertEquals(2, lt.getExtendedLanguageSubtags().length);
-		assertEquals("cmn", lt.getExtendedLanguageSubtags()[0]);
-		assertEquals("xyz", lt.getExtendedLanguageSubtags()[1]);
-		assertEquals("zh-cmn-xyz", lt.getLanguage());
+		LangTag lt = LangTag.fromLang("zh", "cmn", "xyz");
+		assertEquals("zh", lt.primaryLanguage());
+		assertNotNull(lt.languageSubtags());
+		assertEquals(2, lt.languageSubtags().size());
+		assertEquals("cmn", lt.languageSubtags().get(0));
+		assertEquals("xyz", lt.languageSubtags().get(1));
+		assertEquals("zh-cmn-xyz", lt.language());
 		assertEquals("zh-cmn-xyz", lt.toString());
 	}
 
-	@Test
-	public void testConstructorExtendedSubtagOnly() throws LangTagException {
-
-		LangTag lt = new LangTag(null, "cmn");
-		assertNull(lt.getPrimaryLanguage());
-		assertNotNull(lt.getExtendedLanguageSubtags());
-		assertEquals("cmn", lt.getExtendedLanguageSubtags()[0]);
-		assertEquals("cmn", lt.getLanguage());
-		assertEquals("cmn", lt.toString());
+	@Test(expected = NullPointerException.class)
+	public void testConstructorExtendedSubtagOnly() {
+		LangTag.fromLang(null, "cmn");
 	}
 
 	@Test
-	public void testEquality() throws LangTagException {
+	public void testEquality() {
 
-		LangTag lt1 = new LangTag("en");
-		lt1.setRegion("us");
-
-		LangTag lt2 = new LangTag("EN");
-		lt2.setRegion("US");
+		LangTag lt1 = ImmutableLangTag.builder().primaryLanguage("en").region("us").build();
+		LangTag lt2 = ImmutableLangTag.builder().primaryLanguage("EN").region("US").build();
 
 		assertTrue(lt1.equals(lt2));
 	}
@@ -114,338 +102,316 @@ public class LangTagTest {
 	@Test
 	public void testScript() throws Exception {
 
-		LangTag lt = new LangTag("sr");
-		lt.setScript("Cyrl");
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("sr").script("Cyrl").build();
 
-		assertEquals("sr", lt.getPrimaryLanguage());
-		assertEquals("sr", lt.getLanguage());
-		assertEquals("Cyrl", lt.getScript());
+		assertEquals("sr", lt.primaryLanguage());
+		assertEquals("sr", lt.language());
+		assertEquals("Cyrl", lt.script());
 		assertEquals("sr-Cyrl", lt.toString());
 	}
 
-	@Test
-	public void testScriptNull() throws LangTagException {
-
-		LangTag lt = new LangTag("sr");
-		lt.setScript(null);
-
-		assertEquals("sr", lt.getPrimaryLanguage());
-		assertEquals("sr", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertEquals("sr", lt.toString());
+	@Test(expected = NullPointerException.class)
+	public void testScriptNull() {
+		ImmutableLangTag.builder().primaryLanguage("sr").script((String) null).build();
 	}
 
 	@Test
-	public void testRegionISO3166() throws LangTagException {
+	public void testRegionISO3166() {
 
-		LangTag lt = new LangTag("en");
-		lt.setRegion("US");
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("en").region("US").build();
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertEquals("US", lt.getRegion());
+		assertEquals("en", lt.primaryLanguage());
+		assertEquals("en", lt.language());
+		assertEquals("US", lt.region());
 		assertEquals("en-US", lt.toString());
 	}
 
 	@Test
-	public void testRegionUNM49() throws LangTagException {
+	public void testRegionUNM49() {
 
-		LangTag lt = new LangTag("en");
-		lt.setRegion("123");
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("en").region("123").build();
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertEquals("123", lt.getRegion());
+		assertEquals("en", lt.primaryLanguage());
+		assertEquals("en", lt.language());
+		assertEquals("123", lt.region());
 		assertEquals("en-123", lt.toString());
 	}
 
-	@Test
-	public void testRegionNull() throws LangTagException {
-
-		LangTag lt = new LangTag("en");
-		lt.setRegion(null);
-
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertNull(lt.getRegion());
-		assertEquals("en", lt.toString());
+	@Test(expected = NullPointerException.class)
+	public void testRegionNull() {
+		ImmutableLangTag.builder().primaryLanguage("en").region((String) null).build();
 	}
 
 	@Test
-	public void testVariants() throws LangTagException {
+	public void testVariants() {
 
-		LangTag lt = new LangTag("en");
-		lt.setVariants("2012");
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("en").addVariants("2012").build();
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertEquals(1, lt.getVariants().length);
-		assertEquals("2012", lt.getVariants()[0]);
+		assertEquals("en", lt.primaryLanguage());
+		assertEquals("en", lt.language());
+		assertEquals(1, lt.variants().size());
+		assertEquals("2012", lt.variants().get(0));
 		assertEquals("en-2012", lt.toString());
 	}
 
 	@Test
-	public void testVariantsEmpty() throws LangTagException {
+	public void testVariantsEmpty() {
 
-		LangTag lt = new LangTag("en");
-		lt.setVariants();
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("en").addVariants().build();
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertNull(lt.getVariants());
+		assertEquals("en", lt.primaryLanguage());
+		assertEquals("en", lt.language());
+		assertTrue(lt.variants().isEmpty());
 		assertEquals("en", lt.toString());
 	}
 
 	@Test
-	public void testExtensions() throws LangTagException {
+	public void testExtensions() {
 
-		LangTag lt = new LangTag("en");
-		lt.setExtensions("a-cal");
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("en").addExtensions("a-cal").build();
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertEquals(1, lt.getExtensions().length);
-		assertEquals("a-cal", lt.getExtensions()[0]);
+		assertEquals("en", lt.primaryLanguage());
+		assertEquals("en", lt.language());
+		assertEquals(1, lt.extensions().size());
+		assertEquals("a-cal", lt.extensions().get(0));
 		assertEquals("en-a-cal", lt.toString());
 	}
 
 	@Test
-	public void testExtensionsEmpty() throws LangTagException {
+	public void testExtensionsEmpty() {
 
-		LangTag lt = new LangTag("en");
-		lt.setExtensions();
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("en").addExtensions().build();
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertNull(lt.getExtensions());
+		assertEquals("en", lt.primaryLanguage());
+		assertEquals("en", lt.language());
+		assertTrue(lt.extensions().isEmpty());
 		assertEquals("en", lt.toString());
 	}
 
 	@Test
-	public void testPrivateUse() throws LangTagException {
+	public void testPrivateUse() {
 
-		LangTag lt = new LangTag("en");
-		lt.setPrivateUse("x-private");
+		LangTag lt = ImmutableLangTag.builder().primaryLanguage("en").privateUse("x-private").build();
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertEquals("en", lt.getLanguage());
-		assertEquals("x-private", lt.getPrivateUse());
+		assertEquals("en", lt.primaryLanguage());
+		assertEquals("en", lt.language());
+		assertEquals("x-private", lt.privateUse());
 		assertEquals("en-x-private", lt.toString());
 	}
 
 	@Test
-	public void testParse1() throws LangTagException {
+	public void testParse1() {
 
 		LangTag lt = LangTag.parse("de");
 
-		assertEquals("de", lt.getPrimaryLanguage());
-		assertEquals("de", lt.getLanguage());
+		assertEquals("de", lt.primaryLanguage());
+		assertEquals("de", lt.language());
 		assertEquals("de", lt.toString());
 	}
 
 	@Test
-	public void testParse2() throws LangTagException {
+	public void testParse2() {
 
 		LangTag lt = LangTag.parse("zh-Hant");
 
-		assertEquals("zh", lt.getPrimaryLanguage());
-		assertEquals("zh", lt.getLanguage());
-		assertEquals("Hant", lt.getScript());
+		assertEquals("zh", lt.primaryLanguage());
+		assertEquals("zh", lt.language());
+		assertEquals("Hant", lt.script());
 		assertEquals("zh-Hant", lt.toString());
 	}
 
 	@Test
-	public void testParse3() throws LangTagException {
+	public void testParse3() {
 
 		LangTag lt = LangTag.parse("zh-cmn-Hans-CN");
 
-		assertEquals("zh", lt.getPrimaryLanguage());
-		assertEquals("cmn", lt.getExtendedLanguageSubtags()[0]);
-		assertEquals("zh-cmn", lt.getLanguage());
-		assertEquals("Hans", lt.getScript());
-		assertEquals("CN", lt.getRegion());
+		assertEquals("zh", lt.primaryLanguage());
+		assertEquals("cmn", lt.languageSubtags().get(0));
+		assertEquals("zh-cmn", lt.language());
+		assertEquals("Hans", lt.script());
+		assertEquals("CN", lt.region());
 		assertEquals("zh-cmn-Hans-CN", lt.toString());
 	}
 
 	@Test
-	public void testParse4() throws LangTagException {
+	public void testParse4() {
 
 		LangTag lt = LangTag.parse("zh-yue-HK");
 
-		assertEquals("zh", lt.getPrimaryLanguage());
-		assertEquals("yue", lt.getExtendedLanguageSubtags()[0]);
-		assertEquals("zh-yue", lt.getLanguage());
-		assertEquals("HK", lt.getRegion());
+		assertEquals("zh", lt.primaryLanguage());
+		assertEquals("yue", lt.languageSubtags().get(0));
+		assertEquals("zh-yue", lt.language());
+		assertEquals("HK", lt.region());
 		assertEquals("zh-yue-HK", lt.toString());
 	}
 
 	@Test
-	public void testParse5() throws LangTagException {
+	public void testParse5() {
 
 		LangTag lt = LangTag.parse("yue-HK");
 
-		assertEquals("yue", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("yue", lt.getLanguage());
-		assertEquals("HK", lt.getRegion());
+		assertEquals("yue", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("yue", lt.language());
+		assertEquals("HK", lt.region());
 		assertEquals("yue-HK", lt.toString());
 	}
 
 	@Test
-	public void testParse6() throws LangTagException {
+	public void testParse6() {
 
 		LangTag lt = LangTag.parse("sr-Latn-RS");
 
-		assertEquals("sr", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("sr", lt.getLanguage());
-		assertEquals("Latn", lt.getScript());
-		assertEquals("RS", lt.getRegion());
+		assertEquals("sr", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("sr", lt.language());
+		assertEquals("Latn", lt.script());
+		assertEquals("RS", lt.region());
 		assertEquals("sr-Latn-RS", lt.toString());
 	}
 
 	@Test
-	public void testParse7() throws LangTagException {
+	public void testParse7() {
 
 		LangTag lt = LangTag.parse("sl-rozaj");
 
-		assertEquals("sl", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("sl", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertNull(lt.getRegion());
+		assertEquals("sl", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("sl", lt.language());
+		assertTrue(lt.script().isEmpty());
+		assertTrue(lt.region().isEmpty());
 
-		assertNotNull(lt.getVariants());
-		assertEquals(1, lt.getVariants().length);
-		assertEquals("rozaj", lt.getVariants()[0]);
+		assertNotNull(lt.variants());
+		assertEquals(1, lt.variants().size());
+		assertEquals("rozaj", lt.variants().get(0));
 		assertEquals("sl-rozaj", lt.toString());
 	}
 
 	@Test
-	public void testParse8() throws LangTagException {
+	public void testParse8() {
 
 		LangTag lt = LangTag.parse("de-CH-1901");
 
-		assertEquals("de", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("de", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertEquals("CH", lt.getRegion());
+		assertEquals("de", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("de", lt.language());
+		assertTrue(lt.script().isEmpty());
+		assertEquals("CH", lt.region());
 
-		assertNotNull(lt.getVariants());
-		assertEquals(1, lt.getVariants().length);
-		assertEquals("1901", lt.getVariants()[0]);
+		assertNotNull(lt.variants());
+		assertEquals(1, lt.variants().size());
+		assertEquals("1901", lt.variants().get(0));
 		assertEquals("de-CH-1901", lt.toString());
 	}
 
 	@Test
-	public void testParse9() throws LangTagException {
+	public void testParse9() {
 
 		LangTag lt = LangTag.parse("hy-Latn-IT-arevela");
 
-		assertEquals("hy", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("hy", lt.getLanguage());
-		assertEquals("Latn", lt.getScript());
-		assertEquals("IT", lt.getRegion());
+		assertEquals("hy", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("hy", lt.language());
+		assertEquals("Latn", lt.script());
+		assertEquals("IT", lt.region());
 
-		assertNotNull(lt.getVariants());
-		assertEquals(1, lt.getVariants().length);
-		assertEquals("arevela", lt.getVariants()[0]);
+		assertNotNull(lt.variants());
+		assertEquals(1, lt.variants().size());
+		assertEquals("arevela", lt.variants().get(0));
 		assertEquals("hy-Latn-IT-arevela", lt.toString());
 	}
 
 	@Test
-	public void testParse10() throws LangTagException {
+	public void testParse10() {
 
 		LangTag lt = LangTag.parse("en-US-u-islamcal");
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("en", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertEquals("US", lt.getRegion());
+		assertEquals("en", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("en", lt.language());
+		assertTrue(lt.script().isEmpty());
+		assertEquals("US", lt.region());
 
-		assertNotNull(lt.getExtensions());
-		assertEquals(1, lt.getExtensions().length);
-		assertEquals("u-islamcal", lt.getExtensions()[0]);
+		assertNotNull(lt.extensions());
+		assertEquals(1, lt.extensions().size());
+		assertEquals("u-islamcal", lt.extensions().get(0));
 		assertEquals("en-US-u-islamcal", lt.toString());
 	}
 
 	@Test
-	public void testParse11() throws LangTagException {
+	public void testParse11() {
 
 		LangTag lt = LangTag.parse("en-a-myext-b-another");
 
-		assertEquals("en", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("en", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertNull(lt.getRegion());
+		assertEquals("en", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("en", lt.language());
+		assertTrue(lt.script().isEmpty());
+		assertTrue(lt.region().isEmpty());
 
-		assertNotNull(lt.getExtensions());
-		assertEquals(2, lt.getExtensions().length);
-		assertEquals("a-myext", lt.getExtensions()[0]);
-		assertEquals("b-another", lt.getExtensions()[1]);
+		assertNotNull(lt.extensions());
+		assertEquals(2, lt.extensions().size());
+		assertEquals("a-myext", lt.extensions().get(0));
+		assertEquals("b-another", lt.extensions().get(1));
 		assertEquals("en-a-myext-b-another", lt.toString());
 	}
 
 	@Test
-	public void testParse12() throws LangTagException {
+	public void testParse12() {
 
 		LangTag lt = LangTag.parse("zh-CN-a-myext-x-private");
 
-		assertEquals("zh", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("zh", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertEquals("CN", lt.getRegion());
+		assertEquals("zh", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("zh", lt.language());
+		assertTrue(lt.script().isEmpty());
+		assertEquals("CN", lt.region());
 
-		assertNotNull(lt.getExtensions());
-		assertEquals(1, lt.getExtensions().length);
-		assertEquals("a-myext", lt.getExtensions()[0]);
+		assertNotNull(lt.extensions());
+		assertEquals(1, lt.extensions().size());
+		assertEquals("a-myext", lt.extensions().get(0));
 
-		assertEquals("x-private", lt.getPrivateUse());
+		assertEquals("x-private", lt.privateUse());
 	}
 
-	@Test(expected = LangTagException.class)
-	public void testParse13() throws LangTagException {
-		LangTag.parse("invalid-tag");
+	@Test(expected = IllegalArgumentException.class)
+	public void testParse13() {
+		LangTag.parse("invalid-t");
 	}
 
 	@Test
-	public void testParse14() throws LangTagException {
+	public void testParse14() {
 		assertNull(LangTag.parse(null));
 	}
 
 	@Test
-	public void testParse15() throws LangTagException {
+	public void testParse15() {
 		LangTag lt = LangTag.parse("ja-JP-u-ca-japanese");
 
-		assertEquals("ja", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("ja", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertEquals("JP", lt.getRegion());
+		assertEquals("ja", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("ja", lt.language());
+		assertTrue(lt.script().isEmpty());
+		assertEquals("JP", lt.region());
 
-		assertNotNull(lt.getExtensions());
-		assertEquals(1, lt.getExtensions().length);
-		assertEquals("u-ca-japanese", lt.getExtensions()[0]);
+		assertNotNull(lt.extensions());
+		assertEquals(1, lt.extensions().size());
+		assertEquals("u-ca-japanese", lt.extensions().get(0));
 	}
 
 	@Test
-	public void testParse16() throws LangTagException {
+	public void testParse16() {
 		LangTag lt = LangTag.parse("th-TH-u-nu-thai");
 
-		assertEquals("th", lt.getPrimaryLanguage());
-		assertNull(lt.getExtendedLanguageSubtags());
-		assertEquals("th", lt.getLanguage());
-		assertNull(lt.getScript());
-		assertEquals("TH", lt.getRegion());
+		assertEquals("th", lt.primaryLanguage());
+		assertTrue(lt.languageSubtags().isEmpty());
+		assertEquals("th", lt.language());
+		assertTrue(lt.script().isEmpty());
+		assertEquals("TH", lt.region());
 
-		assertNotNull(lt.getExtensions());
-		assertEquals(1, lt.getExtensions().length);
-		assertEquals("u-nu-thai", lt.getExtensions()[0]);
+		assertNotNull(lt.extensions());
+		assertEquals(1, lt.extensions().size());
+		assertEquals("u-nu-thai", lt.extensions().get(0));
 	}
 
 }
