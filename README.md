@@ -1,4 +1,4 @@
-![Maven Central](https://img.shields.io/maven-central/v/org.jresearch.gwt.languageTag/org.jresearch.gwt.languageTag?style=plastic)
+![Maven Central](https://img.shields.io/maven-central/v/org.jresearch.gwt.locale/org.jresearch.gwt.locale.languageTag?style=plastic)
 
 # GWT RFC-5646 language tag.
 
@@ -12,8 +12,8 @@ Original library location: https://bitbucket.org/connect2id/nimbus-language-tags
 
 ```xml
 <dependency>
-	<groupId>org.jresearch.gwt.languageTag</groupId>
-	<artifactId>org.jresearch.gwt.languageTag</artifactId>
+	<groupId>org.jresearch.gwt.locale</groupId>
+	<artifactId>org.jresearch.gwt.locale.languageTag</artifactId>
 	<version>1.0.0</version>
 </dependency>
 ```
