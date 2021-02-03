@@ -1,4 +1,4 @@
-package org.jresearch.gwt.locale.langtag.parser;
+package org.jresearch.locale.langtag.parser;
 
 @FunctionalInterface
 public interface CharFunction {

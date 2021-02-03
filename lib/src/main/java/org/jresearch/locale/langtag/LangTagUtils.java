@@ -19,7 +19,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package org.jresearch.gwt.locale.langtag;
+package org.jresearch.locale.langtag;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jresearch</groupId>
+		<artifactId>org.jresearch.pom</artifactId>
+		<version>29-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.jresearch.locale.languageTag</groupId>
+	<artifactId>org.jresearch.locale.languageTag.pom</artifactId>
+	<packaging>pom</packaging>
+	<version>1.1.0-SNAPSHOT</version>
+	<name>JRS: Implementation of RFC-5646 (language tag)</name>
+	<description>JRS: GWT implementation of RFC-5646 (language tag) based on Connect2id language tag library. Java implementation of "Tags for Identifying Languages", RFC-5646. Supports normal language tags. Special private language tags beginning with "x" and grandfathered tags beginning with "i" are not supported.</description>
+	<url>https://github.com/foal/language-tag</url>
+
+	<issueManagement>
+		<url>https://github.com/foal/language-tag/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:hg:https://helixteamhub.cloud/JRS/projects/gwtTime/repositories/mercurial/gwt-language-tag</connection>
+		<developerConnection>scm:hg:ssh://hth@helixteamhub.cloud/JRS/projects/gwtTime/repositories/mercurial/gwt-language-tag</developerConnection>
+		<url>https://github.com/foal/language-tag</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<modules>
+		<module>../lib</module>
+		<module>../gwt</module>
+		<module>../bom</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jresearch.locale.languageTag</groupId>
+				<artifactId>org.jresearch.locale.languageTag</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jresearch.locale.languageTag</groupId>
+				<artifactId>org.jresearch.locale.languageTag</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jresearch.locale.languageTag</groupId>
+				<artifactId>org.jresearch.locale.languageTag.gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

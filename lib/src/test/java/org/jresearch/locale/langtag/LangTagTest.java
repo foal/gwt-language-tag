@@ -19,13 +19,14 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package org.jresearch.gwt.locale.langtag;
+package org.jresearch.locale.langtag;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.jresearch.locale.langtag.LangTag;
 import org.junit.Test;
 
 /**
