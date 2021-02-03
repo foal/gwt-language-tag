@@ -31,9 +31,9 @@
  * "x" and grandfathered tags beginning with "i" are not supported.
  *
  * <p>
- * See {@link org.jresearch.gwt.locale.langtag.LangTag} for details.
+ * See {@link org.jresearch.locale.langtag.LangTag} for details.
  *
  * <p>
  * This package has no dependencies.
  */
-package org.jresearch.gwt.locale.langtag;
+package org.jresearch.locale.langtag;

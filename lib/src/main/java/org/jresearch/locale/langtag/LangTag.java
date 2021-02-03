@@ -19,7 +19,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package org.jresearch.gwt.locale.langtag;
+package org.jresearch.locale.langtag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 import org.immutables.value.Value.Check;
 import org.immutables.value.Value.Default;
 import org.immutables.value.Value.Immutable;
-import org.jresearch.gwt.locale.langtag.ImmutableLangTag.Builder;
-import org.jresearch.gwt.locale.langtag.parser.ParserUtil;
+import org.jresearch.locale.langtag.ImmutableLangTag.Builder;
+import org.jresearch.locale.langtag.parser.ParserUtil;
 
 /**
  * Language tag according to <a href="http://tools.ietf.org/html/rfc5646">RFC
