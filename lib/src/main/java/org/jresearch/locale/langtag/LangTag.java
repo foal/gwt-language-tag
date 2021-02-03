@@ -27,6 +27,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.immutables.value.Value;
 import org.immutables.value.Value.Check;
 import org.immutables.value.Value.Default;
 import org.immutables.value.Value.Immutable;
@@ -81,6 +82,8 @@ import org.jresearch.locale.langtag.parser.ParserUtil;
  */
 @Immutable
 @SuppressWarnings({ "static-method", "nls" })
+//Due GWT disable annotation auto-discover (see https://github.com/immutables/immutables/issues/740)
+@Value.Style(allowedClasspathAnnotations = Override.class)
 public abstract class LangTag {
 
 	private static final char SEP = '-';
