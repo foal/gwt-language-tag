@@ -10,7 +10,7 @@
 	<groupId>org.jresearch.locale.languageTag</groupId>
 	<artifactId>org.jresearch.locale.languageTag.pom</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1.0</version>
+	<version>1.1.1-SNAPSHOT</version>
 	<name>JRS: Implementation of RFC-5646 (language tag)</name>
 	<description>JRS: GWT implementation of RFC-5646 (language tag) based on Connect2id language tag library. Java implementation of "Tags for Identifying Languages", RFC-5646. Supports normal language tags. Special private language tags beginning with "x" and grandfathered tags beginning with "i" are not supported.</description>
 	<url>https://github.com/foal/language-tag</url>
@@ -24,7 +24,7 @@
 		<connection>scm:hg:https://helixteamhub.cloud/JRS/projects/gwtTime/repositories/mercurial/gwt-language-tag</connection>
 		<developerConnection>scm:hg:ssh://hth@helixteamhub.cloud/JRS/projects/gwtTime/repositories/mercurial/gwt-language-tag</developerConnection>
 		<url>https://github.com/foal/language-tag</url>
-		<tag>v1.1.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
