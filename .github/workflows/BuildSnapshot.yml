@@ -1,0 +1,42 @@
+name: Build and publish on update 
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '8'
+        distribution: 'zulu'
+        cache: maven
+    - uses: s4u/maven-settings-action@v2.5.0
+      with:
+        sonatypeSnapshots: true
+        apacheSnapshots: true
+        servers: |
+          [{
+              "id": "ossrh",
+              "username": "${{ secrets.SONATYPE_USERNAME }}",
+              "password": "${{ secrets.SONATYPE_PASSWORD }}"
+          }]        
+    - name: Package and test
+      run: mvn package -B
+      working-directory: pom
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/target/surefire-reports/*.xml"
+    - name: Deploy
+      run: mvn deploy -Dmaven.test.skip -B
+      working-directory: pom
