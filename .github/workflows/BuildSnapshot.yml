@@ -75,5 +75,5 @@ jobs:
         # Needed to get PR information, if any
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -U -B -P coverage package sonar:sonar -Dsonar.projectKey=foal_gwt-language-tag
+      run: mvn -U -B -P coverage package sonar:sonar -Dsonar.projectKey=foal_gwt-language-tag -Dsonar.coverage.jacoco.xmlReportPaths='../**/target/site/jacoco-aggregate/jacoco.xml'
       working-directory: pom
