@@ -1,5 +1,6 @@
-![Maven Central](https://img.shields.io/maven-central/v/org.jresearch.locale.languageTag/org.jresearch.locale.languageTag.bom?style=plastic)
-[![Build and publish on update](https://github.com/foal/gwt-language-tag/actions/workflows/BuildSnapshot.yml/badge.svg)](https://github.com/foal/gwt-language-tag/actions/workflows/BuildSnapshot.yml)
+![Maven Central](https://img.shields.io/maven-central/v/org.jresearch.locale.languageTag/org.jresearch.locale.languageTag.bom)
+[![Build](https://github.com/foal/gwt-language-tag/actions/workflows/BuildSnapshot.yml/badge.svg)](https://github.com/foal/gwt-language-tag/actions/workflows/BuildSnapshot.yml)
+![Sonar](https://img.shields.io/sonar/quality_gate/foal_gwt-language-tag?server=https%3A%2F%2Fsonarcloud.io)
 
 # Java + GWT RFC-5646 language tag.
 
